@@ -44,7 +44,7 @@ def update_user(id):
     return redirect(url_for('index'))
 
 @app.route('/delete_user/<int:id>', methods=['POST'])
-def delete_user():
+def delete_user(id):
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
         cursor.execute('DELETE FROM users WHERE id = ?', (id,))
