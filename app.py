@@ -6,7 +6,7 @@ app = Flask(__name__)
 def init_db():
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
-        cursor.execute(''' CREATE TABLE IF NOT EXISTS users(
+        cursor.execute(''' CREATE TABLE IF NOT EXISTS users (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             name TEXT NOT NULL,
                             email TEXT NO NULL
@@ -22,3 +22,14 @@ def index():
     users = cursor.fetchall()
     conn.close()
     return render_template('index.html', users=users)
+
+@app.route('/create_user', methods=['POST'])
+def create_user():
+    name = request.form['name']
+    email = request.form['email']
+    with sqlite3.connect('database.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO users (name, email) VALUES (?, ?)', (name, email))
+        conn.commit()
+    return redirect(url_for('index'))
+
