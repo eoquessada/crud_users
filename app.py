@@ -49,5 +49,6 @@ def delete_user():
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
         cursor.execute('DELETE FROM users WHERE name = ?', (name,))
+    return redirect(url_for('index'))
 
 
