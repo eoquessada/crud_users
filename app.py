@@ -43,12 +43,12 @@ def update_user(id):
         conn.commit()
     return redirect(url_for('index'))
 
-@app.route('/delete_user', methods=['POST'])
+@app.route('/delete_user/<int:id>', methods=['POST'])
 def delete_user():
-    name = request.form['name']
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
-        cursor.execute('DELETE FROM users WHERE name = ?', (name,))
+        cursor.execute('DELETE FROM users WHERE id = ?', (id,))
+        conn.commit()
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
