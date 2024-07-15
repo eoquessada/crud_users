@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Usuarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            overflow: hidden;
+            padding: 30px;
+            background: #fff;
+            margin-top: 50px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        input {
+            margin: 0 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        .edit-form {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerenciamento de Usuários</h1>
+        <form action="/create_user" method="POST">
+            <input type="text" name="name" placeholder="Nome" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <button type="submit">Criar Usuário</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user[0] }}</td>
+                    <td>{{ user[1] }}</td>
+                    <td>{{ user[2] }}</td>
+                    <td>
+                        <form class="edit-form" action="/update_user/{{ user[0] }}" method="POST">
+                            <input type="text" name="name" value="{{ user[1] }}" required>
+                            <input type="email" name="email" value="{{ user[2] }}" required>
+                            <button type="submit">Salvar</button>
+                        </form>
+                        <form action="/delete_user/{{ user[0] }}" method="POST" style="display:inline;">
+                            <button type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
