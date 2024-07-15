@@ -33,3 +33,13 @@ def create_user():
         conn.commit()
     return redirect(url_for('index'))
 
+@app.route('/update_user/<int:id>', methods=['POST'])
+def update_user(id):
+    name = request.form['name']
+    email = request.form['email']
+    with sqlite3.connect('database.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('UPDATE users SET name = ?, email = ? WHERE id = ?', (name, email, id))
+        conn.commit()
+    return redirect(url_for('index'))
+
