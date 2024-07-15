@@ -51,4 +51,6 @@ def delete_user():
         cursor.execute('DELETE FROM users WHERE name = ?', (name,))
     return redirect(url_for('index'))
 
-
+if __name__ == '__main__':
+    init_db()
+    app.run(debug=True)
