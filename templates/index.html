@@ -59,6 +59,19 @@
             justify-content: center;
             margin-top: 10px;
         }
+        .action-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .action-container div {
+            flex: 1;
+            margin: 0 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -69,35 +82,41 @@
             <input type="email" name="email" placeholder="Email" required>
             <button type="submit">Criar Usuário</button>
         </form>
-        <table>
-            <thead>
+        <form action="/search_user" method="GET">
+            <input type="text" name="name" placeholder="Nome" required>
+            <button type="submit">Buscar Usuário</button>
+        </form>
+        
+        {% if user %}
+            <table>
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Email</th>
-                    <th>Ações</th>
                 </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
                 <tr>
                     <td>{{ user[0] }}</td>
                     <td>{{ user[1] }}</td>
                     <td>{{ user[2] }}</td>
-                    <td>
-                        <form class="edit-form" action="/update_user/{{ user[0] }}" method="POST">
-                            <input type="text" name="name" value="{{ user[1] }}" required>
-                            <input type="email" name="email" value="{{ user[2] }}" required>
-                            <button type="submit">Salvar</button>
-                        </form>
-                        <form action="/delete_user/{{ user[0] }}" method="POST" style="display:inline;">
-                            <button type="submit">Excluir</button>
-                        </form>
-                    </td>
                 </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+            </table>
+            <div class="action-container">
+                <div>
+                    <h2>Atualizar Usuário</h2>
+                    <form action="/update_user/{{ user[0] }}" method="POST" class="edit-form">
+                        <input type="text" name="name" value="{{ user[1] }}" required>
+                        <input type="email" name="email" value="{{ user[2] }}" required>
+                        <button type="submit">Atualizar</button>
+                    </form>
+                </div>
+                <div>
+                    <h2>Deletar Usuário</h2>
+                    <form action="/delete_user/{{ user[0] }}" method="POST" class="edit-form">
+                        <button type="submit">Deletar</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </body>
 </html>

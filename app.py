@@ -9,19 +9,25 @@ def init_db():
         cursor.execute(''' CREATE TABLE IF NOT EXISTS users (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             name TEXT NOT NULL,
-                            email TEXT NO NULL
+                            email TEXT NOT NULL
                             )
                        ''')
         conn.commit()
 
 @app.route('/')
-def index():
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users')
-    users = cursor.fetchall()
-    conn.close()
-    return render_template('index.html', users=users)
+def index(user=None):
+    return render_template('index.html', user=user)
+
+@app.route('/search_user', methods=['GET'])
+def search_user():
+    name = request.args.get('name')
+    user = None
+    with sqlite3.connect('database.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users WHERE name = ?', (name,))
+        user = cursor.fetchone()
+        print(f"User fetched: {user}")  # Debug: Verifique se o usuário é retornado
+    return render_template('index.html', user=user)
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
